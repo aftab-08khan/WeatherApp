@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Snowfall from "react-snowfall";
-import RainEffect from "./components/rainEffect";
 import DesertEffect from "./components/desertEffect";
-
+import HeatWaveEffect from "./components/heatWave/heatWave";
+import RainEffect from "./components/rainEffect";
 const App = () => {
   const ApiKey = "da5d9ee6369049959ae112934240508";
   const [data, setData] = useState(null);
@@ -13,7 +13,7 @@ const App = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://api.weatherapi.com/v1/current.json?key=${ApiKey}&q=${city}&aqi=no`
+          `https://api.weatherapi.com/v1/current.json?key=${ApiKey}&q=${city}&aqi=no`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -37,16 +37,22 @@ const App = () => {
     setSearch("");
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
   const temperature = Math.ceil(data?.current?.temp_c);
   const condition = data?.current?.condition?.text?.toLowerCase() || "";
 
   const isRainy =
     condition.includes("patchy rain nearby") ||
     condition.includes("partly cloudy") ||
-    condition.includes("thundery outbreaks in nearby");
-  condition.includes("light rain shower");
+    condition.includes("thundery outbreaks in nearby") ||
+    condition.includes("light rain shower");
   const isSnowy = condition.includes("fog");
-  const isSunny = condition.includes("sunny");
+  const isSunny = condition.includes("sunny") || condition.includes("clear");
 
   return (
     <div
@@ -65,6 +71,7 @@ const App = () => {
             value={search}
             className="w-60 px-4 py-2 sm:px-10 sm:py-4 rounded-xl border-2 border-gray-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all duration-300"
             onChange={handleChange}
+            onKeyDown={handleKeyDown} // Add the key down handler
           />
           <button
             className="mt-4 sm:mt-0 px-8 py-2 sm:px-10 sm:py-4 text-white bg-indigo-600 rounded-xl shadow-lg hover:bg-indigo-800 transform hover:scale-105 transition-all duration-300"
@@ -125,7 +132,12 @@ const App = () => {
           />
         </>
       )}
-      {isSunny && <DesertEffect />}
+      {isSunny && (
+        <>
+          <DesertEffect />
+          <HeatWaveEffect /> {/* Add heat wave effect */}
+        </>
+      )}
     </div>
   );
 };

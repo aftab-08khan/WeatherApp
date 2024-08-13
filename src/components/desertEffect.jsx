@@ -1,6 +1,7 @@
 // components/DesertEffect.js
 import React from "react";
 import { useSpring, animated } from "@react-spring/web";
+import HeatWaveEffect from "./heatWave/heatWave";
 
 const DesertEffect = () => {
   // Animation for sun
@@ -49,6 +50,7 @@ const DesertEffect = () => {
           background: "rgba(139, 69, 19, 0.8)", // Sandy color for ground
         }}
       />
+      <HeatWaveEffect /> {/* Add heat wave effect */}
     </div>
   );
 };
