@@ -4,7 +4,7 @@ import DesertEffect from "./components/desertEffect";
 import HeatWaveEffect from "./components/heatWave/heatWave";
 import RainEffect from "./components/rainEffect";
 const App = () => {
-  const ApiKey = "da5d9ee6369049959ae112934240508";
+  const ApiKey = "e011e6cf88e049e1b80131237252207";
   const [data, setData] = useState(null);
   const [search, setSearch] = useState("");
   const [city, setCity] = useState("mumbai");
@@ -56,22 +56,22 @@ const App = () => {
 
   return (
     <div
-      className={`relative h-screen w-full flex flex-col items-center ${
+      className={`relative w-full flex flex-col items-center ${
         temperature > 24 ? "bg-blue-300" : "bg-gray-900"
-      } transition-all duration-500 ease-in-out overflow-hidden`}
+      } transition-all duration-500 ease-in-out`}
     >
-      <h1 className="text-[32px] sm:text-[62px] text-yellow-500 text-center z-10">
+      <h1 className="text-[32px] sm:text-[62px] font-bold text-white text-center z-10">
         Weather App
       </h1>
-      <div className="flex flex-col items-center mt-10 z-10">
+      <div className="flex flex-col items-center mt-10 z-10 pb-20">
         <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8 animate-fadeIn">
           <input
             type="text"
             placeholder="Enter a city"
             value={search}
-            className="w-60 px-4 py-2 sm:px-10 sm:py-4 rounded-xl border-2 border-gray-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all duration-300"
+            className="w-60 capitalize px-4 py-2 sm:px-8 sm:py-4 rounded-xl border-2 border-gray-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all duration-300"
             onChange={handleChange}
-            onKeyDown={handleKeyDown} // Add the key down handler
+            onKeyDown={handleKeyDown}
           />
           <button
             className="mt-4 sm:mt-0 px-8 py-2 sm:px-10 sm:py-4 text-white bg-indigo-600 rounded-xl shadow-lg hover:bg-indigo-800 transform hover:scale-105 transition-all duration-300"
@@ -82,7 +82,7 @@ const App = () => {
         </div>
         {data && (
           <div className="w-full animate-fadeIn gap-6">
-            <div className="flex flex-col sm:flex-row gap-6 items-center bg-white rounded-xl shadow-2xl p-4 sm:p-8 transform hover:scale-105 transition-all duration-300">
+            <div className="flex flex-col sm:flex-row cursor-pointer gap-6 items-center bg-white rounded-xl shadow-2xl p-4 sm:p-8 transform transition-all duration-300">
               <div className="text-center border-b sm:border-r-2 sm:pr-6 mb-4 sm:mb-0">
                 <h2 className="text-[32px] sm:text-[46px] font-bold text-indigo-600">
                   {data?.location?.name}
@@ -98,7 +98,7 @@ const App = () => {
               </div>
               <div className="flex flex-col items-center">
                 <span className="text-3xl sm:text-5xl mt-6 text-indigo-600">
-                  {temperature} &deg;
+                  {temperature}&deg;
                 </span>
                 <span className="text-lg sm:text-2xl mt-2 text-gray-600">
                   {data?.current?.condition.text}

@@ -26,68 +26,59 @@ const RainEffect = () => {
 
     for (let i = 0; i < rainCount; i++) {
       vertices[i * 3] = Math.random() * 1000 - 500;
-      vertices[i * 3 + 1] = Math.random() * 1000; // Start from top to bottom
+      vertices[i * 3 + 1] = Math.random() * 1000;
       vertices[i * 3 + 2] = Math.random() * 1000 - 500;
     }
 
     geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
 
-    const material = new THREE.PointsMaterial({ color: 0xaaaaaa, size: 1.5 }); // Increased size
+    const material = new THREE.PointsMaterial({ color: 0xaaaaaa, size: 1.5 });
     const rain = new THREE.Points(geometry, material);
     scene.add(rain);
 
-    // Create dark rainy clouds
     const cloudTexture = new THREE.TextureLoader().load(
       "/path/to/cloud_texture.png",
       (texture) => {
-        // Callback ensures texture is loaded before applying
         const cloudMaterial = new THREE.MeshBasicMaterial({
           map: texture,
           transparent: true,
-          opacity: 0.7, // Adjust opacity for cloud density
-          depthWrite: false, // Ensure clouds don't obscure raindrops
+          opacity: 0.7,
+          depthWrite: false,
         });
 
-        const cloudGeometry = new THREE.PlaneGeometry(2000, 2000); // Adjust size as needed
+        const cloudGeometry = new THREE.PlaneGeometry(2000, 2000);
         const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
-        clouds.position.set(0, 0, -500); // Place clouds behind raindrops
+        clouds.position.set(0, 0, -500);
         scene.add(clouds);
       }
     );
 
-    // Create the ambient light
-    const ambientLight = new THREE.AmbientLight(0x404040); // Soft white light
+    const ambientLight = new THREE.AmbientLight(0x404040);
     scene.add(ambientLight);
 
-    // Create the lightning effect
-    const lightning = new THREE.PointLight(0xffffff, 0, 1000); // White light
-    lightning.position.set(0, 0, 0); // Center position
+    const lightning = new THREE.PointLight(0xffffff, 0, 100);
+    lightning.position.set(0, 0, 0);
     scene.add(lightning);
 
-    // Set camera position
     camera.position.z = 500;
 
-    // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
 
-      // Move raindrops downwards
       const positions = rain.geometry.attributes.position.array;
       for (let i = 1; i < positions.length; i += 3) {
-        positions[i] -= 2; // Speed of falling
+        positions[i] -= 2;
         if (positions[i] < -500) {
-          positions[i] = 1000; // Reset position to top
+          positions[i] = 100;
         }
       }
       rain.geometry.attributes.position.needsUpdate = true;
 
-      // Flashing lightning effect
       if (Math.random() > 0.98) {
-        // Adjust probability for flash frequency
-        lightning.intensity = 10; // Bright flash
+        lightning.intensity = 10;
         setTimeout(() => {
-          lightning.intensity = 0; // Dim after flash
-        }, 100); // Flash duration
+          lightning.intensity = 0;
+        }, 100);
       }
 
       renderer.render(scene, camera);
@@ -95,7 +86,6 @@ const RainEffect = () => {
 
     animate();
 
-    // Cleanup on unmount
     return () => {
       renderer.dispose();
     };
@@ -109,7 +99,7 @@ const RainEffect = () => {
         top: 0,
         left: 0,
         width: "100%",
-        height: "100%",
+        height: "100vh",
         zIndex: 1,
       }}
     />
